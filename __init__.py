@@ -31,10 +31,10 @@ a shortcut to the Documents directory added to the favorites bar::
                                   favorites=[(user_path, 'Documents')])
             browser.bind(
                         on_success=self._fbrowser_success,
-                        on_canceled=self._fbrowser_canceled)
+                        on_cancelled=self._fbrowser_cancelled)
             return browser
 
-        def _fbrowser_canceled(self, instance):
+        def _fbrowser_cancelled(self, instance):
             print 'cancelled, Close self.'
 
         def _fbrowser_success(self, instance):
@@ -43,7 +43,7 @@ a shortcut to the Documents directory added to the favorites bar::
     TestApp().run()
 
 :Events:
-    `on_canceled`:
+    `on_cancelled`:
         Fired when the `Cancel` buttons `on_release` event is called.
 
     `on_success`:
@@ -218,7 +218,7 @@ Builder.load_string('''
             size_hint_x: None
             width: metrics.dp(100)
             text: root.cancel_string
-            on_release: root.dispatch('on_canceled')
+            on_release: root.dispatch('on_cancelled')
 
 ''')
 
@@ -326,7 +326,7 @@ class FileBrowser(BoxLayout):
     '''FileBrowser class, see module documentation for more information.
     '''
 
-    __events__ = ('on_canceled', 'on_success', 'on_submit')
+    __events__ = ('on_cancelled', 'on_canceled', 'on_success', 'on_submit')
 
     select_state = OptionProperty('normal', options=('normal', 'down'))
     '''State of the 'select' button, must be one of 'normal' or 'down'.
@@ -463,6 +463,9 @@ class FileBrowser(BoxLayout):
     def on_success(self):
         pass
 
+    def on_cancelled(self):
+        pass
+
     def on_canceled(self):
         pass
 
@@ -521,11 +524,11 @@ if __name__ == '__main__':
             browser = FileBrowser(select_string='Select',
                                   favorites=[(user_path, 'Documents')])
             browser.bind(on_success=self._fbrowser_success,
-                        on_canceled=self._fbrowser_canceled,
+                        on_cancelled=self._fbrowser_cancelled,
                         on_submit=self._fbrowser_submit)
             return browser
 
-        def _fbrowser_canceled(self, instance):
+        def _fbrowser_cancelled(self, instance):
             print('cancelled, Close self.')
 
         def _fbrowser_success(self, instance):
